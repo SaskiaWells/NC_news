@@ -57,7 +57,6 @@ describe("/api", () => {
             .get("/api")
             .expect(200)
             .then((result) => {
-                console.log(result.body)
                 expect(result.body.endpoints["GET /api"].description).toBe(
                     "serves up a json representation of all the available endpoints of the api"
                 );
