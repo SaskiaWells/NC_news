@@ -8,11 +8,11 @@ Your database will be PSQL, and you will interact with it using [node-postgres](
 
 ## Kanban
 
-### Link to your Trello Board here: https://trello.com/b/7yiHe1nI
+## Creating environment variables
 
-To keep track of the tasks involved in this project we're going to use a kanban board. Ensure that you work on one _ticket_ at time. You can click on the ticket to find out more information about what is required for the feature. A ticket is not considered complete unless both the happy path and errors response are handled. You can make use of the checklist on each ticket to keep track of the errors you want to handle. You can also make use of [error-handling.md](error-handling.md) to consider the error codes we may wish to respond with.
+You will need to create two .env files for your project: .env.test and .env.development. Into each, add PGDATABASE=<database_name_here>, with the correct database name for that environment (see /db/setup.sql for the database names). Double check that these .env files are .gitignored.
 
-**Please ensure you work through the tickets in numerical order.**
+You'll need to run npm install at this point - Please do not install specific packages as you can do this down the line when you need them.
 
 ## Git Branching and Pull Requests
 
