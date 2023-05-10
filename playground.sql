@@ -1,4 +1,4 @@
 \c nc_news_test
 
 
-SELECT *  FROM topics;
+SELECT  *  FROM articles  where article_id = 1;

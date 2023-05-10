@@ -1,6 +1,7 @@
 const request = require("supertest");
 const app = require("../db/app");
 const connection = require("../db/connection.js");
+const endpoints = require('../endpoints.json')
 
 const {
   topicData,
@@ -33,10 +34,10 @@ describe("/api/topics", () => {
 });
 
 describe("/api/nonsense", () => {
-  test('GET - status 500 - responds with an error msg "Invalid path!"', () => {
+  test('GET - status 404 - responds with an error msg "Invalid path!"', () => {
     return request(app)
       .get("/api/nonsense")
-      .expect(500)
+      .expect(404)
       .then((result) => {
         expect(result.body.msg).toBe("Invalid Path!");
       });
@@ -49,60 +50,52 @@ describe("/api", () => {
             .get("/api")
             .expect(200)
             .then((result) => {
-                expect(Object.keys(result.body.endpoints).length).toBe(3);
+              expect(result.body.endpoints).toEqual(endpoints);
+              
             });
     });
-    test("json object should have a description key for each endpoint", () => {
-        return request(app)
-            .get("/api")
-            .expect(200)
-            .then((result) => {
-                expect(result.body.endpoints["GET /api"].description).toBe(
-                    "serves up a json representation of all the available endpoints of the api"
-                );
-                expect(result.body.endpoints["GET /api/topics"].description).toBe(
-                    "serves an array of all topics"
-                );
-                expect(result.body.endpoints["GET /api/articles"].description).toBe(
-                    "serves an array of all topics"
-                );
-            });
-    });
-    test("json object details the queries on each endpoint", () => {
-        return request(app)
-            .get("/api")
-            .expect(200)
-            .then((result) => {
-                expect(result.body.endpoints["GET /api/topics"].queries).toEqual([]);
-                expect(result.body.endpoints["GET /api/articles"].queries).toEqual([
-                    "author",
-                    "topic",
-                    "sort_by",
-                    "order",
-                ]);
-            });
-    });
-    test('json object should have an example response property for each endpoint', () => {
-        return request(app)
-            .get("/api")
-            .expect(200)
-            .then((result) => {
-                expect(result.body.endpoints["GET /api/topics"].exampleResponse).toEqual({
-                    "topics": [{ "slug": "football", "description": "Footie!" }]
-                });
-                expect(result.body.endpoints["GET /api/articles"].exampleResponse).toEqual({
-                    "articles": [
-                        {
-                            "title": "Seafood substitutions are increasing",
-                            "topic": "cooking",
-                            "author": "weegembump",
-                            "body": "Text from the article..",
-                            "created_at": "2018-05-30T15:59:13.341Z",
-                            "votes": 0,
-                            "comment_count": 6
-                        }
-                    ]
-                });
-            })
-    });
+
 })    
+
+describe("/api/articles/:article_id", () => {
+  test("GET - status 200 - respond swith a article of the corresponding artivcle id", () => {
+    return request(app)
+      .get("/api/articles/1")
+      .expect(200)
+      .then((result) => { 
+          expect(typeof result.body.article.author).toBe("string");
+        expect(typeof result.body.article.title).toBe("string");
+        expect(typeof result.body.article.article_id).toBe("number");
+        expect(typeof result.body.article.body).toBe("string");
+        expect(typeof result.body.article.topic).toBe("string");
+        expect(typeof result.body.article.created_at).toBe("string");
+        expect(typeof result.body.article.votes).toBe("number");
+          expect(typeof result.body.article.article_img_url).toBe("string");
+        });
+  });
+});
+describe('/api/articles/nonsense', () => {
+  test('GET - status 400 - responds with error message "Bad request!"', () => {
+    return request(app)
+      .get('/api/articles/nonsense')
+      .expect(400)
+      .then(result => {
+      expect(result.body.msg).toBe('Bad request!')
+    })
+    })
+})
+
+describe("/api/articles/10000000000", () => {
+  test('GET - status 404 - responds with error message "Not found!"', () => {
+    return request(app)
+      .get("/api/articles/1000000000")
+      .expect(404)
+      .then((result) => {
+        expect(result.body.msg).toBe("Not found!");
+      });
+  });
+});
+
+ 
+
+
