@@ -158,7 +158,7 @@ describe("/api/articles/:article_id/comments", () => {
            expect(comment.article_id).toBe(1);
         expect(comment.author).toBe("icellusedkars");
         expect(comment.votes).toBe(0)
-        // expect(comment.created_at).toBe(new Date().toISOString());
+         expect(typeof comment.created_at).toBe('string');
       });
   });
 });
