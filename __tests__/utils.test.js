@@ -107,9 +107,9 @@ describe("formatComments", () => {
   });
 });
 
-describe.only('createCommentnumber', () => {
-  test('should return an array', () => {
-    console.log(input)
-    expect(Array.isArray(input)).toBe(true)
-  })
-})
+// describe.only('createCommentnumber', () => {
+//   test('should return an array', () => {
+//     console.log(input)
+//     expect(Array.isArray(input)).toBe(true)
+//   })
+// })
