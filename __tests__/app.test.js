@@ -65,7 +65,7 @@ describe("/api/articles/:article_id", () => {
       .then((result) => { 
           expect(typeof result.body.article.author).toBe("string");
         expect(typeof result.body.article.title).toBe("string");
-        expect(typeof result.body.article.article_id).toBe("number");
+        expect(result.body.article.article_id).toBe(1);
         expect(typeof result.body.article.body).toBe("string");
         expect(typeof result.body.article.topic).toBe("string");
         expect(typeof result.body.article.created_at).toBe("string");
@@ -96,6 +96,26 @@ describe("/api/articles/10000000000", () => {
   });
 });
 
- 
+
+describe('/api/articles', () => {
+  test('GET - status 200 - responds with an array of arcticle objects', () => {
+    return request(app)
+      .get('/api/articles')
+      .expect(200)
+      .then(result => {
+        expect(result.body.articles.length).toBe(12);
+              result.body.articles.forEach((article) => {
+          expect(typeof article.author).toBe("string");
+          expect(typeof article.title).toBe("string");
+          expect(typeof article.article_id).toBe("number");
+          expect(typeof article.comment_count).toBe("number");
+          expect(typeof article.topic).toBe("string");
+          expect(typeof article.created_at).toBe("string");
+          expect(typeof article.votes).toBe("number");
+          expect(typeof article.article_img_url).toBe("string");
+              });
+    })
+  })
+})
 
 
