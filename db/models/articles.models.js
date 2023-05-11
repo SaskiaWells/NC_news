@@ -1,5 +1,5 @@
 const connection = require('../connection')
-const { createCommentNumber } = require('../seeds/utils')
+const { createCommentNumber, checkArticleExists } = require('../seeds/utils')
 
 exports.retreiveArticleById = (article_id) => {
 
@@ -19,8 +19,19 @@ exports.retreiveArticles = () => {
       `SELECT articles.article_id, articles.title, articles.topic, articles.author, articles.created_at, articles.votes, articles.article_img_url FROM articles ORDER BY created_at DESC`
     )
     .then((result) => {
-      //console.log(result.rows)
       return createCommentNumber(result.rows);
 
     });
 }
+
+exports.retreiveCommentByArticleId = (article_id) => {
+  return checkArticleExists(article_id).then(() => {
+    return connection
+    .query(
+    `SELECT * FROM comments WHERE article_id = $1 ORDER BY created_at DESC`, [article_id]
+  )
+  })
+    .then(result => {
+    return result.rows
+  })
+};
