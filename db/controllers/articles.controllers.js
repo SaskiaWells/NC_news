@@ -1,4 +1,4 @@
-const { retreiveArticleById, retreiveArticles, retreiveCommentByArticleId } = require("../models/articles.models")
+const { retreiveArticleById, retreiveArticles, retreiveCommentByArticleId, addComment } = require("../models/articles.models")
 
 exports.getArticleById = (req, res, next) => {
 
@@ -29,6 +29,20 @@ exports.getCommentByArticleId = (req, res, next) => {
     
     retreiveCommentByArticleId(article_id).then((comments) => {
         res.status(200).send({comments: comments})
+    })
+        .catch(err => {
+        next(err)
+    })
+}
+
+exports.postComment = (req, res, next) => {
+
+    const newComment = req.body
+
+    const {article_id} = req.params
+
+    addComment(newComment, article_id).then(result => {
+        res.status(201).send({comment: result})
     })
         .catch(err => {
         next(err)

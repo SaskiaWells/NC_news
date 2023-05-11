@@ -1,5 +1,5 @@
 const request = require("supertest");
-const app = require("../db/app");
+const app = require("../db/app/app");
 const connection = require("../db/connection.js");
 const endpoints = require("../endpoints.json");
 require("jest-sorted");
@@ -125,6 +125,7 @@ describe("/api/articles/:article_id/comments", () => {
   test("GET - status 200 - responds with the comments for a given artilce ID", () => {
     return request(app)
       .get("/api/articles/1/comments")
+      .expect(200)
       .then((result) => {
         expect(result.body.comments.length).toBe(11);
         expect(result.body.comments).toBeSortedBy("created_at", {
@@ -141,12 +142,44 @@ describe("/api/articles/:article_id/comments", () => {
         });
       });
   });
+
+  test("POST - status 201 - post a comment to article if article exists, responds with the posted comment", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .expect(201)
+      .send({
+        body: "I am adding a comment",
+        author: "icellusedkars",
+      })
+      .then((result) => {
+           const { comment } = result.body; 
+           expect(comment.comment_id).toBe(19);
+           expect(comment.body).toBe("I am adding a comment");
+           expect(comment.article_id).toBe(1);
+        expect(comment.author).toBe("icellusedkars");
+        expect(comment.votes).toBe(0)
+        expect(comment.created_at).toBe(new Date().toISOString());
+      });
+  });
 });
 
 describe("/api/articles/10000000000/comments", () => {
   test('GET - status 404 - responds with error message "Article not found!"', () => {
     return request(app)
       .get("/api/articles/1000000000/comments")
+      .expect(404)
+      .then((result) => {
+        expect(result.body.msg).toBe("Article not found!");
+      });
+  });
+
+  test('POST - status 404 - responds with error message "Article not found!"', () => {
+    return request(app)
+      .post("/api/articles/1000000000/comments")
+      .send({
+        body: "I am adding a comment",
+        author: "icellusedkars",
+      })
       .expect(404)
       .then((result) => {
         expect(result.body.msg).toBe("Article not found!");
@@ -163,4 +196,16 @@ describe("/api/articles/nonsense/comments", () => {
         expect(result.body.msg).toBe("Bad request!");
       });
   });
+    test('POST - status 400 - responds with error message "Bad request!"', () => {
+      return request(app)
+        .post("/api/articles/nonsense/comments")
+        .send({
+          body: "I am adding a comment",
+          author: "icellusedkars",
+        })
+        .expect(400)
+        .then((result) => {
+          expect(result.body.msg).toBe("Bad request!");
+        });
+    });
 });
