@@ -2,7 +2,13 @@ const {
   convertTimestampToDate,
   createRef,
   formatComments,
+  createCommentNumber,
+  checkArticleExists
 } = require("../db/seeds/utils");
+
+const connection = require("../db/connection");
+const request = require("supertest");
+const app = require("../db/app/app");
 
 describe("convertTimestampToDate", () => {
   test("returns a new object", () => {
@@ -102,3 +108,4 @@ describe("formatComments", () => {
     expect(formattedComments[0].created_at).toEqual(new Date(timestamp));
   });
 });
+
