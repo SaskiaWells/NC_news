@@ -11,6 +11,7 @@ const {
   commentData,
 } = require("../db/data/test-data/index.js");
 const seed = require("../db/seeds/seed.js");
+const { expect } = require("@jest/globals");
 
 afterAll(() => {
   connection.end();
@@ -162,7 +163,17 @@ describe("/api/articles/:article_id/comments", () => {
       });
   });
 
-  // test('POST - status 400 - ')
+  test('POST - status 400 - returns error when the sent obj is incomplete', () => {
+        return request(app)
+          .post("/api/articles/1/comments")
+          .expect(400)
+          .send({
+            body: "I am adding a comment",
+          })
+          .then((result) => {
+            expect(result.body.msg).toBe('Missing properties on body!')
+          });
+  })
 });
 
 describe("/api/articles/10000000000/comments", () => {
