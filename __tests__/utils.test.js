@@ -7,6 +7,8 @@ const {
 } = require("../db/seeds/utils");
 
 const connection = require("../db/connection");
+const request = require("supertest");
+const app = require("../db/app/app");
 
 describe("convertTimestampToDate", () => {
   test("returns a new object", () => {
@@ -107,9 +109,3 @@ describe("formatComments", () => {
   });
 });
 
-// describe.only('createCommentnumber', () => {
-//   test('should return an array', () => {
-//     console.log(input)
-//     expect(Array.isArray(input)).toBe(true)
-//   })
-// })

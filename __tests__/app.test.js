@@ -161,6 +161,8 @@ describe("/api/articles/:article_id/comments", () => {
          expect(typeof comment.created_at).toBe('string');
       });
   });
+
+  test('POST - status 400 - ')
 });
 
 describe("/api/articles/10000000000/comments", () => {
@@ -209,3 +211,5 @@ describe("/api/articles/nonsense/comments", () => {
         });
     });
 });
+
+
