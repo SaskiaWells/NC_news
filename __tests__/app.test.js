@@ -162,7 +162,7 @@ describe("/api/articles/:article_id/comments", () => {
       });
   });
 
-  test('POST - status 400 - ')
+  // test('POST - status 400 - ')
 });
 
 describe("/api/articles/10000000000/comments", () => {
