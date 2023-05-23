@@ -5,6 +5,7 @@ const {
   getArticles,
   getCommentByArticleId,
   postComment,
+  patchArticleVotes
 } = require("../controllers/articles.controllers.js");
 const endpoints = require("../../endpoints.json");
 const { errorHandling } = require("./error-handling.js");
@@ -27,6 +28,8 @@ app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id/comments", getCommentByArticleId);
 
 app.post('/api/articles/:article_id/comments', postComment)
+
+app.patch('/api/articles/:article_id', patchArticleVotes)
   
 app.all("*", (req, res) => {
   res.status(404).send({ msg: "Invalid Path!" });

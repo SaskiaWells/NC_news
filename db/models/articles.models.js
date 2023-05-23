@@ -8,6 +8,7 @@ exports.retreiveArticleById = (article_id) => {
       if (result.rows.length === 0) {
         return Promise.reject({ status: 404, msg: "Not found!" });
       }
+
       return result.rows;
     });
 };
@@ -46,4 +47,25 @@ exports.addComment = (newComment, article_id) => {
   ]).then(result => {
     return result.rows[0]                                   
   });
+};
+
+exports.updateArticleVotes = (articleId, articleBody) => {
+  if (!Object.keys(articleBody).length) {
+    return Promise.reject({ status: 400, msg: "Missing request body!" });
+  }
+
+  
+  const { inc_votes } = articleBody;
+  const queryString = `UPDATE articles
+  SET votes = votes + $1
+  WHERE article_id = $2
+  RETURNING *;`;
+
+  const queryArr = [inc_votes, articleId];
+
+  const checkArticle = checkArticleExists(articleId);
+  const queryPromise = connection.query(queryString, queryArr);
+  return Promise.all([checkArticle, queryPromise]).then(
+    ([_, result]) => result.rows[0]
+  );
 };
