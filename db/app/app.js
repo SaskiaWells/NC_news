@@ -9,10 +9,12 @@ const {
 } = require("../controllers/articles.controllers.js");
 const endpoints = require("../../endpoints.json");
 const { errorHandling } = require("./error-handling.js");
+const cors = require("cors");
 
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 
 app.get("/api", (req, res) => {
