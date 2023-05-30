@@ -1,4 +1,4 @@
-const { retreiveArticleById, retreiveArticles, retreiveCommentByArticleId, addComment } = require("../models/articles.models")
+const { retreiveArticleById, retreiveArticles, retreiveCommentByArticleId, addComment, updateArticleVotes } = require("../models/articles.models")
 
 exports.getArticleById = (req, res, next) => {
 
@@ -48,3 +48,15 @@ exports.postComment = (req, res, next) => {
         next(err)
     })
 }
+
+exports.patchArticleVotes = (request, response, next) => {
+  const { article_id } = request.params;
+    const articleBody = request.body;
+    
+
+  updateArticleVotes(article_id, articleBody)
+    .then((article) => {
+      response.status(200).send({ article });
+    })
+    .catch(next);
+};
