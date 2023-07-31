@@ -64,6 +64,7 @@ describe("/api/articles/:article_id", () => {
       .get("/api/articles/1")
       .expect(200)
       .then((result) => {
+        console.log(result.body)
         expect(typeof result.body.article.author).toBe("string");
         expect(typeof result.body.article.title).toBe("string");
         expect(result.body.article.article_id).toBe(1);

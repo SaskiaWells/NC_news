@@ -21,6 +21,10 @@ app.get("/api", (req, res) => {
   res.status(200).send({ endpoints: endpoints });
 });
 
+app.get("/", (req, res) => {
+  res.status(200).send({ msg: "Welcome to the NC News API!, please go to /api to see all availible endpoints" });
+});
+
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles/:article_id", getArticleById);
