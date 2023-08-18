@@ -13,7 +13,7 @@ Here is the hosted version fof my API: https://nc-news-tm65.onrender.com
 
 Fork and/or clone the project repository from GitHub using
 
-git clone https://github.com/DrawnInward/nc-games
+git clone https://github.com/SaskiaWells/NC_news
 
 Ensure you are in the project directory and make sure you have Node.js installed on your machine.
 
